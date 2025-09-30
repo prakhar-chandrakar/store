@@ -1,5 +1,6 @@
 package com.prakhar.store.service;
 
+import com.prakhar.store.exception.ItemNotFoundException;
 import com.prakhar.store.model.Item;
 import com.prakhar.store.repository.ItemRepository;
 import org.springframework.stereotype.Service;
@@ -28,12 +29,12 @@ public class ItemService {
 //        if(itemRepository.existsById(id))
 //            return itemRepository.findById(id);
 //        throw new RuntimeException("Item not found");
-        return itemRepository.findById(id).orElseThrow(()-> new RuntimeException("Item not found"));
+        return itemRepository.findById(id).orElseThrow(()-> new ItemNotFoundException("Item with id " + id + " not found"));
     }
 
     public Item updateItem(String id, Item newItem ) {
         Item oldItem = itemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Item not found"));
+                .orElseThrow(() -> new ItemNotFoundException("Item with id " + id + " not found"));
         oldItem.setName(newItem.getName());
         oldItem.setPrice(newItem.getPrice());
         oldItem.setQuantity(newItem.getQuantity());
@@ -44,6 +45,6 @@ public class ItemService {
         if(itemRepository.existsById(id))
 
             itemRepository.deleteById(id);
-        else throw new RuntimeException("Item not found");
+        else throw new ItemNotFoundException("Item with id " + id + " not found");
     }
 }
