@@ -42,6 +42,7 @@ public class ItemService {
 
     public void deleteItem(String id) {
         if(itemRepository.existsById(id))
+
             itemRepository.deleteById(id);
         else throw new RuntimeException("Item not found");
     }
