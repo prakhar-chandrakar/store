@@ -1,5 +1,8 @@
 package com.prakhar.store.service;
 
+import com.prakhar.store.exception.InvalidOrderException;
+import com.prakhar.store.exception.ItemNotFoundException;
+import com.prakhar.store.exception.OutOfStockException;
 import com.prakhar.store.model.Item;
 import com.prakhar.store.model.Order;
 import com.prakhar.store.repository.ItemRepository;
@@ -8,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -23,18 +25,18 @@ public class OrderService {
 
     public void buyItem(String orderItemId, Integer orderItemQuantity,String userId, double totalPricePaid) {
         Item itemDetails = itemRepository.findById(orderItemId)
-                .orElseThrow(()->new RuntimeException("Item not found"));
+                .orElseThrow(()->new ItemNotFoundException("Item with id " + orderItemId + " not found"));
 
         int itemQuantity = itemDetails.getQuantity();
         if(itemQuantity < orderItemQuantity)
-            throw new RuntimeException("Item out of stock");
+            throw new OutOfStockException("Item out of stock");
 
         itemDetails.setQuantity(itemQuantity-orderItemQuantity);
         itemRepository.save(itemDetails);
 
         double expectedPrice = itemDetails.getPrice() * orderItemQuantity;
         if(expectedPrice > totalPricePaid)
-            throw new RuntimeException("SCAM happened");
+            throw new InvalidOrderException("Total price cannot be less than actual price");
 
         Order orderDetails = new Order();
         orderDetails.setUserId(userId);

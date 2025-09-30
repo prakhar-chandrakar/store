@@ -35,6 +35,22 @@ Its called **REPOSITORY ABSTRACTION**, u focus on what you want and not how its 
 - Throw exceptions correctly and function names accordingly.
 - Whenever u call findById() store it in Optional<T> and then use .get() to extract that object. 
 
+### DTO 
+- It helps to hide the db schema to outside world.
+- it's a mapping of data between controllers and service
+- It validates the data with annotations @Valid, dose not allows bad data to reach dbs
+- we convert DTO to Entity in service level
+- it's a buffer between raw data and your business logic
+
+### Exception handling
+- Custom : Create a custom exception and extend the Java existing exception like runtimeException and then reuse them.
+- Global : We need them because SB might send some random default error page or stack trace
+- A GlobalExceptionHandler allows us to:
+- Catch exceptions in one central place.
+- Map them to proper HTTP status codes (404, 400, 409, etc.).
+- Return a clean and consistent JSON response
+
+Return a clean and consistent JSON response.
 ### Industry-level best practices you should adopt now
 
 
