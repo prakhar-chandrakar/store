@@ -1,4 +1,3 @@
-
 ### Folder Structure 
 - Model (Data model)
 - Repository (to perform DB operations)
@@ -50,7 +49,34 @@ Its called **REPOSITORY ABSTRACTION**, u focus on what you want and not how its 
 - Map them to proper HTTP status codes (404, 400, 409, etc.).
 - Return a clean and consistent JSON response
 
-Return a clean and consistent JSON response.
+### Controller layer
+- It exposes the END points of your backend service
+- its keeps API controller separate from the business logic
+- Always use DTOs to map the request and validate them and then pass them to service layer
+- `@RestController` = Marks this class as REST API.
+-` @RequestMapping("/admin")` = Base URL.
+- `@PostMapping("/items")` = Specific endpoint.
+- Always inject services, never new them.
+- DTO → Model before service.
+- Model → DTO before returning response.
+
+```yaml
+POST /admin/items
+   |
+   v
+AdminController (gets ItemRequestDTO)
+   |
+   v
+ItemService (business logic, save in DB)
+   |
+   v
+ItemRepository (MongoDB)
+   |
+   v
+Returns ItemResponseDTO
+```
+
+
 ### Industry-level best practices you should adopt now
 
 
